@@ -1,67 +1,68 @@
 #include <Arduino.h>
-
+#include "definitions.h"
+#include "ultrasone.h"
 void setup()
 {
   Serial.begin(9600);
+
+  // sensor
+  pinMode(TrigPin, OUTPUT);
+  pinMode(EchoPin, INPUT);
 }
-const int maxMsgCount = 50;
+//incomingmessage
 char incomingChar = 0;
-char message[maxMsgCount] = {'\0'};
+char message[MaxMsgCount] = {'\0'};
 int msgCount = 0;
 
-enum SerialStates
-{
-  Idle,
-  Receiving,
-  MessageReceived,
-  SendResponse
-};
-SerialStates serialState = Idle;
+//sensor
+float distance = 0;
+
+//servo
+int degree = 0;
+States state = ProcessingData;
+// void checkSerialIn()
+// {
+//   if (Serial.available() > 0)
+//   {
+//     incomingChar = Serial.read();
+//     if (incomingChar == StartByte)
+//     {
+//       state = ReceivingMessage;
+//     }
+//   }
+// }
 void loop()
 {
-  switch (serialState)
-  {
-  case Idle:
-  {
-    if (Serial.available() > 0)
-    {
-      incomingChar = Serial.read();
-      if (incomingChar == '#')
-      {
-        serialState = Receiving;
-      }
-    }
-  }
-  case Receiving:
-  {
-    incomingChar = Serial.read();
-    if (incomingChar != '%' || msgCount >= maxMsgCount)
-    {
-      message[msgCount] = incomingChar;
-      msgCount++;
-    }
-    else
-    {
-      msgCount = 0;
-      serialState = MessageReceived;
-    }
-  }
-  break;
-  case MessageReceived:
-  {
-    //parse message and move servo
 
-    serialState = SendResponse;
+  switch (state)
+  {
+  case ProcessingData:
+  {
+    distance = getDistance();
+    Serial.print(degree);
+    Serial.print(Delimiter);
+    Serial.println((int)distance); //print the distance that was measured
+    // checkSerialIn();
   }
   break;
-  case SendResponse:
-  {
-    //get distance at degree
-    serialState = Idle;
-  }
+
+    // case ReceivingMessage:
+    // {
+    //   incomingChar = Serial.read();
+    //   if (incomingChar != StopByte)
+    //   {
+    //   }
+    //   else
+    //   {
+    //     state = ProcessMessage;
+    //   }
+    // }
+    // break;
+
+    // case ProcessMessage:
+    // {
+    //   state = ProcessingData;
+    // }
+    // break;
   }
 }
-
-// {
-
-// Serial.print(incomingByte);
