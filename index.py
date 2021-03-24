@@ -3,8 +3,7 @@ import numpy as np
 import pySerial
 import time
 import canvas
-
-W = 500
+W = 500 #fixme: yo wtf andere waarden dan 500 verneukt de lijnen
 H = W
 margin = 10
 radar_window = "Radar"
@@ -12,10 +11,9 @@ size = W, H, 3
 radar_image = np.zeros(size, dtype=np.uint8)
 canvas = canvas.Canvas(radar_window, radar_image, margin, W)
 
-# for dot in dots:
-#     canvas.gen_dots(radar_window, radar_image, dot)
-cv.waitKey(0)
+
 # for line in lines:
+
 # 	del_line(radar_window, radar_image, line[0], line[1])
 # for dot in dots:
 # 	del_dots(radar_window, radar_image, dot[1])
