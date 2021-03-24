@@ -6,15 +6,10 @@ import canvas
 
 W = 500
 H = W
-margin = 50
-# center = int(W / 2)
+margin = 10
 radar_window = "Radar"
 size = W, H, 3
 radar_image = np.zeros(size, dtype=np.uint8)
-# coordinates
-# 0: degree
-# 1: coordinates
-dots = []
 canvas = canvas.Canvas(radar_window, radar_image, margin, W)
 
 # for dot in dots:

@@ -1,7 +1,11 @@
 import cv2 as cv
 
-# 5 px = 1 cm
+# 10 px = 1 cm
 step = 20
+# coordinates
+# 0: degree
+# 1: coordinates
+dots = []
 
 
 class Canvas:
@@ -12,7 +16,6 @@ class Canvas:
         self.center = (self.half, self.half)
         self.border_margin = margin
         self.W = w
-        radius = 200
         default_lines = [[(margin, self.half), (self.W - margin, self.half)],
                          [(self.half, margin), (self.half, self.W - margin)]]
         default_circles = [self.center]
@@ -21,15 +24,18 @@ class Canvas:
         for line in default_lines:
             self.gen_line(line[0], line[1])
         # Outer circle
+        radius = w // 2 - margin
         for coordinate in default_circles:
             self.gen_circle(coordinate, radius)
         # Center dot
-        self.gen_dots(self.center)
+        self.gen_dots(self.center, (0, 0, 255))
         # Grid
         gray = (50, 50, 50)
         for coord in range(0, self.W, step):
             self.gen_line((0, coord), (self.W, coord), gray)
             self.gen_line((coord, 0), (coord, self.W), gray)
+
+    # todo: add dot / remove dot
 
     def gen_circle(self, coordinate, radius, color=(0, 255, 0)):
         thickness = 1
@@ -58,13 +64,13 @@ class Canvas:
                 line_type)
         cv.imshow(self.window, self.img)
 
-    def gen_dots(self, center):
+    def gen_dots(self, center, color=(0, 255, 0)):
         thickness = -1
         line_type = 8
         cv.circle(self.img,
                   center,
                   5,
-                  (0, 0, 255),
+                  color,
                   thickness,
                   line_type)
         cv.imshow(self.window, self.img)

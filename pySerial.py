@@ -1,8 +1,4 @@
 import serial
-import time
-# wait for the connection to complete
-# time.sleep(3)
-
 
 
 class PySerial:
@@ -14,5 +10,6 @@ class PySerial:
         line = self.ser.readline().decode('utf-8').replace("\r\n", "")
         linesplit = line.split("|")
         return linesplit
+
     def close_conn(self):
         self.ser.close()
