@@ -20,17 +20,7 @@ float distance = 0;
 //servo
 int degree = 0;
 States state = ProcessingData;
-// void checkSerialIn()
-// {
-//   if (Serial.available() > 0)
-//   {
-//     incomingChar = Serial.read();
-//     if (incomingChar == StartByte)
-//     {
-//       state = ReceivingMessage;
-//     }
-//   }
-// }
+
 void loop()
 {
 

@@ -3,7 +3,7 @@
 float getDistance()
 {
   float echoTime;           //variable to store the time it takes for a ping to bounce off an object
-  float calculatedDistance; //variable to store the distance calculated from the echo time
+  float calculatedDistance = -1; //variable to store the distance calculated from the echo time
 
   //send out an ultrasonic pulse that's 10ms long
   digitalWrite(TrigPin, HIGH);
