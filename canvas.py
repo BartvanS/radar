@@ -1,6 +1,8 @@
 import cv2 as cv
+
 # 10 px = 1 cm
 step = 20
+
 
 # coordinates
 # 0: degree
@@ -33,6 +35,9 @@ class Canvas:
             self.gen_line((0, coord), (self.W, coord), gray)
             self.gen_line((coord, 0), (coord, self.W), gray)
 
+    def update_canvas(self):
+        cv.imshow(self.window, self.img)
+
     def add_dot(self, coordinate, color=(255, 0, 0)):
         self.dots.append(coordinate)
         self.gen_dots(coordinate, color)
@@ -44,7 +49,6 @@ class Canvas:
     def gen_circle(self, coordinate, radius, color=(0, 255, 0)):
         thickness = 1
         cv.circle(self.img, coordinate, radius, color, thickness)
-        cv.imshow(self.window, self.img)
 
     def gen_line(self, start, end, color=(0, 255, 0)):
         thickness = 1
@@ -55,7 +59,6 @@ class Canvas:
                 color,
                 thickness,
                 line_type)
-        cv.imshow(self.window, self.img)
 
     def del_line(self, start, end):
         thickness = 1
@@ -66,7 +69,6 @@ class Canvas:
                 (0, 0, 0),
                 thickness,
                 line_type)
-        cv.imshow(self.window, self.img)
 
     def gen_dots(self, coordinate, color=(0, 255, 0)):
         thickness = -1
@@ -77,7 +79,6 @@ class Canvas:
                   color,
                   thickness,
                   line_type)
-        cv.imshow(self.window, self.img)
 
     def del_dots(self, center):
         thickness = -1
@@ -88,4 +89,3 @@ class Canvas:
                   (0, 0, 0),
                   thickness,
                   line_type)
-        cv.imshow(self.window, self.img)
