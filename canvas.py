@@ -1,8 +1,9 @@
 import cv2 as cv
 import math
 
-
 grid_step = 20
+
+
 # coordinates
 # 0: degree
 # 1: coordinates
@@ -18,23 +19,17 @@ class Canvas:
         self.setup_canvas()
 
     def setup_canvas(self):
-        default_lines = [[(self.border_margin, self.half), (self.W - self.border_margin, self.half)],
-                         [(self.half, self.border_margin), (self.half, self.W - self.border_margin)]]
-        default_circles = [self.center]
+
+
+        # plus form [[(self.border_margin, self.half), (self.W - self.border_margin, self.half)],
+        #              [(self.half, self.border_margin), (self.half, self.W - self.border_margin)]]
         # # development help
         # for line in default_lines:
         #     self.gen_line(line[0], line[1])
         # Outer circle
         radius = self.W // 2 - self.border_margin
-        for coordinate in default_circles:
-            self.gen_circle(coordinate, radius)
-        # Center dot
-        self.gen_dots(self.center, (0, 0, 255))
-        # Grid
-        gray = (50, 50, 50)
-        for coord in range(0, self.W, grid_step):
-            self.gen_line((0, coord), (self.W, coord), gray)
-            self.gen_line((coord, 0), (coord, self.W), gray)
+        self.gen_circle(self.center, radius)
+        self.update_canvas()
 
     def update_canvas(self):
         # Grid
@@ -42,6 +37,8 @@ class Canvas:
         for coord in range(0, self.W, grid_step):
             self.gen_line((0, coord), (self.W, coord), gray)
             self.gen_line((coord, 0), (coord, self.W), gray)
+        # Center dot
+        self.gen_dots(self.center, (0, 0, 255))
         cv.imshow(self.window, self.img)
 
     def add_dot(self, coordinate, color=(255, 0, 0)):

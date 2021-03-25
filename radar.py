@@ -19,16 +19,17 @@ class Radar:
         self.canvas = canvas.Canvas(radar_window, self.image, margin, W)
         self.canvas.update_canvas()
         self.dot_radius = 5
-
         self.dots = []
         self.lines = []
 
-    def clean_up_line(self):
-        if len(self.lines) == 0:
+    def clean_up_lines(self):
+        line_count = len(self.lines)
+        if line_count == 0:
             return
-        coordinate = self.lines.pop(0)
-        # coordinate_processed = (coordinate[0] - self.dot_radius, coordinate[1] - self.dot_radius)
-        self.canvas.del_line((self.center, self.center), coordinate)
+        for i in range(line_count):
+            coordinate = self.lines.pop(0)
+            # coordinate_processed = (coordinate[0] - self.dot_radius, coordinate[1] - self.dot_radius)
+            self.canvas.del_line((self.center, self.center), coordinate)
 
     def clean_up_dots(self):
         dot_count = len(self.dots)

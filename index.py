@@ -20,15 +20,15 @@ def parse_msg(msg):
 
 
 def clean_up_lines():
-    radar.clean_up_line()
+    radar.clean_up_lines()
 
 
 def clean_up_dots():
     radar.clean_up_dots()
 
 
-schedule.every(0.5).seconds.do(clean_up_lines)
-schedule.every(2).seconds.do(clean_up_dots)
+schedule.every(0.1).seconds.do(clean_up_lines)
+schedule.every(1).seconds.do(clean_up_dots)
 
 # for degree in range(0, 360):
 #     radar.calc_draw_point(degree, 240)
@@ -46,4 +46,3 @@ if connected:
             cv.destroyAllWindows()
             break
     serial.close_conn()
-
