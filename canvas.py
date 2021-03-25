@@ -20,16 +20,11 @@ class Canvas:
 
     def setup_canvas(self):
 
-
-        # plus form [[(self.border_margin, self.half), (self.W - self.border_margin, self.half)],
-        #              [(self.half, self.border_margin), (self.half, self.W - self.border_margin)]]
-        # # development help
-        # for line in default_lines:
-        #     self.gen_line(line[0], line[1])
         # Outer circle
         radius = self.W // 2 - self.border_margin
         self.gen_circle(self.center, radius)
         self.update_canvas()
+        cv.moveWindow(self.window, 0, 0)
 
     def update_canvas(self):
         # Grid

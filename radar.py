@@ -8,9 +8,9 @@ cm_to_px_factor = 10
 
 class Radar:
     def __init__(self):
-        W = 500  # fixme: yo wtf andere waarden dan 500 verneukt de lijnen
+        W = 1000
         H = W
-        margin = 10
+        margin = 20
         radar_window = "Radar"
         self.dimensions = W, H, 3
         self.image = np.zeros(self.dimensions, dtype=np.uint8)

@@ -19,21 +19,8 @@ def parse_msg(msg):
     radar.calc_draw_point(degree, distance)
 
 
-def clean_up_lines():
-    radar.clean_up_lines()
-
-
-def clean_up_dots():
-    radar.clean_up_dots()
-
-
-schedule.every(0.1).seconds.do(clean_up_lines)
-schedule.every(1).seconds.do(clean_up_dots)
-
-# for degree in range(0, 360):
-#     radar.calc_draw_point(degree, 240)
-
-cv.waitKey(1)
+schedule.every(0.1).seconds.do(radar.clean_up_lines)
+schedule.every(1).seconds.do(radar.clean_up_dots)
 
 if connected:
     while True:
