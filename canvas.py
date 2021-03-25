@@ -1,9 +1,8 @@
 import cv2 as cv
-
-# 10 px = 1 cm
-step = 20
+import math
 
 
+grid_step = 20
 # coordinates
 # 0: degree
 # 1: coordinates
@@ -16,26 +15,33 @@ class Canvas:
         self.border_margin = margin
         self.W = w
         self.dots = []
+        self.setup_canvas()
 
-        default_lines = [[(margin, self.half), (self.W - margin, self.half)],
-                         [(self.half, margin), (self.half, self.W - margin)]]
+    def setup_canvas(self):
+        default_lines = [[(self.border_margin, self.half), (self.W - self.border_margin, self.half)],
+                         [(self.half, self.border_margin), (self.half, self.W - self.border_margin)]]
         default_circles = [self.center]
-        # development help
-        for line in default_lines:
-            self.gen_line(line[0], line[1])
+        # # development help
+        # for line in default_lines:
+        #     self.gen_line(line[0], line[1])
         # Outer circle
-        radius = w // 2 - margin
+        radius = self.W // 2 - self.border_margin
         for coordinate in default_circles:
             self.gen_circle(coordinate, radius)
         # Center dot
         self.gen_dots(self.center, (0, 0, 255))
         # Grid
         gray = (50, 50, 50)
-        for coord in range(0, self.W, step):
+        for coord in range(0, self.W, grid_step):
             self.gen_line((0, coord), (self.W, coord), gray)
             self.gen_line((coord, 0), (coord, self.W), gray)
 
     def update_canvas(self):
+        # Grid
+        gray = (50, 50, 50)
+        for coord in range(0, self.W, grid_step):
+            self.gen_line((0, coord), (self.W, coord), gray)
+            self.gen_line((coord, 0), (coord, self.W), gray)
         cv.imshow(self.window, self.img)
 
     def add_dot(self, coordinate, color=(255, 0, 0)):
@@ -70,12 +76,12 @@ class Canvas:
                 thickness,
                 line_type)
 
-    def gen_dots(self, coordinate, color=(0, 255, 0)):
+    def gen_dots(self, coordinate, color=(0, 255, 0), radius=5):
         thickness = -1
         line_type = 8
         cv.circle(self.img,
                   coordinate,
-                  5,
+                  radius,
                   color,
                   thickness,
                   line_type)

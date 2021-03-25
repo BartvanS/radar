@@ -1,25 +1,49 @@
 import cv2 as cv
-import numpy as np
 import pySerial
-import canvas
-import time
+import radar
+import schedule
 
-serial = pySerial.PySerial()
-W = 500  # fixme: yo wtf andere waarden dan 500 verneukt de lijnen
-H = W
-margin = 10
-radar_window = "Radar"
-size = W, H, 3
-radar_image = np.zeros(size, dtype=np.uint8)
-canvas = canvas.Canvas(radar_window, radar_image, margin, W)
-canvas.update_canvas()
+connected = False
+serial = None
+radar = radar.Radar()
+try:
+    serial = pySerial.PySerial()
+    connected = True
+except:
+    print("could not connect serial")
 
-# time.sleep(1)
-while True:
-    canvas.update_canvas()
-    if serial.ser.inWaiting():
-        line = serial.read_line()
-        print(line)
-    if cv.waitKey(1) & 0xFF == ord('q'):
-        break
-cv.destroyAllWindows()
+
+def parse_msg(msg):
+    degree = int(msg[0])
+    distance = int(msg[1])
+    radar.calc_draw_point(degree, distance)
+
+
+def clean_up_lines():
+    radar.clean_up_line()
+
+
+def clean_up_dots():
+    radar.clean_up_dots()
+
+
+schedule.every(0.5).seconds.do(clean_up_lines)
+schedule.every(2).seconds.do(clean_up_dots)
+
+# for degree in range(0, 360):
+#     radar.calc_draw_point(degree, 240)
+
+cv.waitKey(1)
+
+if connected:
+    while True:
+        schedule.run_pending()
+        if serial.ser.inWaiting():
+            line = serial.read_line()
+            print(line)
+            parse_msg(line)
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            cv.destroyAllWindows()
+            break
+    serial.close_conn()
+

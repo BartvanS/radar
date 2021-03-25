@@ -9,6 +9,7 @@
 //ultrasone sensor
 #define TrigPin 9
 #define EchoPin 8
+#define Piezo 10
 
 //states
 enum States
