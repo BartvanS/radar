@@ -7,9 +7,10 @@
 #define StopByte '%'
 #define Delimiter '|'
 //ultrasone sensor
-#define TrigPin 9
-#define EchoPin 8
+#define TrigPin 8
+#define EchoPin 9
 #define Piezo 10
+#define ServoPin 6
 
 //states
 enum States

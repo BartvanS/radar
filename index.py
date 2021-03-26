@@ -14,6 +14,8 @@ except:
 
 
 def parse_msg(msg):
+    if len(msg) == 0:
+        return
     degree = int(msg[0])
     distance = int(msg[1])
     radar.calc_draw_point(degree, distance)

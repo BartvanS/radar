@@ -43,7 +43,11 @@ class Radar:
         coordinate = self.calc_coord_by_degree(degree, distance)
         self.dots.append(coordinate)
         self.lines.append(coordinate)
-        self.canvas.gen_line(self.center_coord, coordinate)
+        if distance >= 0:
+            self.canvas.gen_line(self.center_coord, coordinate)
+        else:
+            # todo: draw line to circle
+            print("negative value")
         self.draw(coordinate)
 
     def calc_coord_by_degree(self, degree, distance):

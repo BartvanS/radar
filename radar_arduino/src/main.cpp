@@ -1,6 +1,9 @@
 #include <Arduino.h>
 #include "definitions.h"
 #include "ultrasone.h"
+#include <Servo.h>
+Servo myservo;
+
 void setup()
 {
 	Serial.begin(9600);
@@ -9,6 +12,7 @@ void setup()
 	pinMode(TrigPin, OUTPUT);
 	pinMode(EchoPin, INPUT);
 	pinMode(Piezo, OUTPUT);
+	myservo.attach(ServoPin);
 }
 //incomingmessage
 char incomingChar = 0;
@@ -39,9 +43,9 @@ void loop()
 		if (distance > 70)
 		{
 			distance = -1;
-			analogWrite(Piezo, 200);
+			// analogWrite(Piezo, 200);
 		}else{
-			analogWrite(Piezo, 0);
+			// analogWrite(Piezo, 0);
 		}
 		
 		Serial.print(degree);

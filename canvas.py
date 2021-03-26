@@ -19,7 +19,6 @@ class Canvas:
         self.setup_canvas()
 
     def setup_canvas(self):
-
         # Outer circle
         radius = self.W // 2 - self.border_margin
         self.gen_circle(self.center, radius)
