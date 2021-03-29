@@ -1,18 +1,17 @@
 #include <Arduino.h>
 #include "definitions.h"
 #include "ultrasone.h"
-#include <Servo.h>
-Servo myservo;
+#include <Stepper.h>
+#include "stepperFunctions.h"
+Stepper stepper(STEPS, 8, 10, 9, 11);
 
 void setup()
 {
-	Serial.begin(9600);
-
-	// sensor
-	pinMode(TrigPin, OUTPUT);
-	pinMode(EchoPin, INPUT);
-	pinMode(Piezo, OUTPUT);
-	myservo.attach(ServoPin);
+  Serial.begin(9600);
+  stepper.setSpeed(1); // 1 rpm
+  // sensor
+  pinMode(TrigPin, OUTPUT);
+  pinMode(EchoPin, INPUT);
 }
 //incomingmessage
 char incomingChar = 0;
@@ -23,37 +22,26 @@ int msgCount = 0;
 float distance = 100;
 
 //servo
-int degree = 0;
+int currentDegree = 0;
 States state = ProcessingData;
 
 void loop()
 {
+  switch (state)
+  {
+  case ProcessingData:
+  {
+    // stepper.step(2038);
+    
+    distance = getDistance();
+    Serial.print(currentDegree);
+    Serial.print(Delimiter);
+    Serial.println((int)distance); //print the distance that was measured
 
-	switch (state)
-	{
-	case ProcessingData:
-	{
-		delay(100);
-		distance = getDistance();
-		degree++;
-		if (degree > 360)
-		{
-			degree = 0;
-		}
-		if (distance > 70)
-		{
-			distance = -1;
-			// analogWrite(Piezo, 200);
-		}else{
-			// analogWrite(Piezo, 0);
-		}
-		
-		Serial.print(degree);
-		Serial.print(Delimiter);
-		Serial.println((int)distance); //print the distance that was measured
-									   // checkSerialIn();
-	}
-	break;
+    
+    // checkSerialIn();
+  }
+  break;
 
 		// case ReceivingMessage:
 		// {
