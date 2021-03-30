@@ -3,24 +3,24 @@ import math
 import numpy as np
 import schedule
 
-cm_to_px_factor = 10
-
 
 class Radar:
-    def __init__(self):
-        W = 1000
-        H = W
+    def __init__(self, sensor_max_distance_cm):
+        self.W = 1000
+        H = self.W
         margin = 20
         radar_window = "Radar"
-        self.dimensions = W, H, 3
+        self.dimensions = self.W, H, 3
         self.image = np.zeros(self.dimensions, dtype=np.uint8)
-        self.center = W // 2
+        self.center = self.W // 2
         self.center_coord = (self.center, self.center)
-        self.canvas = canvas.Canvas(radar_window, self.image, margin, W)
-        self.canvas.update_canvas()
         self.dot_radius = 5
         self.dots = []
         self.lines = []
+        self.circle_radius = self.W // 2 - margin
+        self.cm_to_px_factor = self.circle_radius // sensor_max_distance_cm
+        self.canvas = canvas.Canvas(radar_window, self.image, margin, self.W, circle_radius=self.circle_radius)
+        self.canvas.update_canvas()
 
     def clean_up_lines(self):
         line_count = len(self.lines)
@@ -39,27 +39,24 @@ class Radar:
             coordinate = self.dots.pop(0)
             self.canvas.del_dots(coordinate)
 
-    def calc_draw_point(self, degree, distance):
-        coordinate = self.calc_coord_by_degree(degree, distance)
-        self.dots.append(coordinate)
+    # todo: test this
+    def calc_draw_point(self, degree, distance_in_cm):
+        distance_in_px = distance_in_cm * self.cm_to_px_factor
+        coordinate = None
+        if 0 < distance_in_px <= self.circle_radius:
+            coordinate = self.calc_coord_by_degree(degree, distance_in_px)
+            self.dots.append(coordinate)
+            self.canvas.gen_dots(coordinate, radius=self.dot_radius)
+        elif distance_in_px > self.circle_radius or distance_in_px < 0:
+            coordinate = self.calc_coord_by_degree(degree, self.circle_radius)
+
+        self.canvas.gen_line(self.center_coord, coordinate)
         self.lines.append(coordinate)
-        if distance >= 0:
-            self.canvas.gen_line(self.center_coord, coordinate)
-        else:
-            # todo: draw line to circle
-            print("negative value")
-        self.draw(coordinate)
+        self.canvas.update_canvas()
 
     def calc_coord_by_degree(self, degree, distance):
-        # 1cm = cm_to_px_factor
-        distance = distance * cm_to_px_factor
         angle_radians = degree * math.pi / 180
         x2 = self.center + distance * math.cos(angle_radians)
         y2 = self.center + distance * math.sin(angle_radians)
         coordinate = (int(x2), int(y2))
         return coordinate
-
-    def draw(self, coordinate):
-        # self.canvas.del_line(self.center_coord, coordinate)
-        self.canvas.gen_dots(coordinate, radius=self.dot_radius)
-        self.canvas.update_canvas()

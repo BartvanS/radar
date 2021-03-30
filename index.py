@@ -3,9 +3,11 @@ import pySerial
 import radar
 import schedule
 
+#todo: correct this max distance
+max_sensor_distance_cm = 40
 connected = False
 serial = None
-radar = radar.Radar()
+radar = radar.Radar(max_sensor_distance_cm)
 try:
     serial = pySerial.PySerial()
     connected = True
@@ -24,14 +26,13 @@ def parse_msg(msg):
 schedule.every(0.1).seconds.do(radar.clean_up_lines)
 schedule.every(1).seconds.do(radar.clean_up_dots)
 
-if connected:
-    while True:
-        schedule.run_pending()
-        if serial.ser.inWaiting():
-            line = serial.read_line()
-            print(line)
-            parse_msg(line)
-        if cv.waitKey(1) & 0xFF == ord('q'):
-            cv.destroyAllWindows()
-            break
-    serial.close_conn()
+while connected:
+    schedule.run_pending()
+    if serial.ser.inWaiting():
+        line = serial.read_line()
+        print(line)
+        parse_msg(line)
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        cv.destroyAllWindows()
+        serial.close_conn()
+        break

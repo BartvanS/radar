@@ -8,7 +8,7 @@ grid_step = 20
 # 0: degree
 # 1: coordinates
 class Canvas:
-    def __init__(self, window, img, margin, w):
+    def __init__(self, window, img, margin, w, circle_radius):
         self.window = window
         self.img = img
         self.half = w // 2
@@ -16,12 +16,12 @@ class Canvas:
         self.border_margin = margin
         self.W = w
         self.dots = []
+        self.radius = circle_radius
         self.setup_canvas()
 
     def setup_canvas(self):
         # Outer circle
-        radius = self.W // 2 - self.border_margin
-        self.gen_circle(self.center, radius)
+        self.gen_circle(self.center, self.radius)
         self.update_canvas()
         cv.moveWindow(self.window, 0, 0)
 
