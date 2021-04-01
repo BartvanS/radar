@@ -1,4 +1,4 @@
-import canvas
+from canvas import Canvas
 import math
 import numpy as np
 import schedule
@@ -19,7 +19,7 @@ class Radar:
         self.lines = []
         self.circle_radius = self.W // 2 - margin
         self.cm_to_px_factor = self.circle_radius // sensor_max_distance_cm
-        self.canvas = canvas.Canvas(radar_window, self.image, margin, self.W, circle_radius=self.circle_radius)
+        self.canvas = Canvas(radar_window, self.image, margin, self.W, circle_radius=self.circle_radius)
         self.canvas.update_canvas()
 
     def clean_up_lines(self):
@@ -39,7 +39,6 @@ class Radar:
             coordinate = self.dots.pop(0)
             self.canvas.del_dots(coordinate)
 
-    # todo: test this
     def calc_draw_point(self, degree, distance_in_cm):
         distance_in_px = distance_in_cm * self.cm_to_px_factor
         coordinate = None

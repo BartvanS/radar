@@ -3,8 +3,7 @@ import pySerial
 import radar
 import schedule
 
-#todo: correct this max distance
-max_sensor_distance_cm = 40
+max_sensor_distance_cm = 60
 connected = False
 serial = None
 radar = radar.Radar(max_sensor_distance_cm)

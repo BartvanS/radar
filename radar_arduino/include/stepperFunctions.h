@@ -3,6 +3,6 @@
 #define STEPS 2038
 #define MAX_AMOUNT_METERS 50
 
-float stepInDegrees(int degree);
+float stepDegree(int degree);
 
 #endif

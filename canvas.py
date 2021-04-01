@@ -20,8 +20,6 @@ class Canvas:
         self.setup_canvas()
 
     def setup_canvas(self):
-        # Outer circle
-        self.gen_circle(self.center, self.radius)
         self.update_canvas()
         cv.moveWindow(self.window, 0, 0)
 
@@ -33,6 +31,8 @@ class Canvas:
             self.gen_line((coord, 0), (coord, self.W), gray)
         # Center dot
         self.gen_dots(self.center, (0, 0, 255))
+        # Outer circle
+        self.gen_circle(self.center, self.radius)
         cv.imshow(self.window, self.img)
 
     def add_dot(self, coordinate, color=(255, 0, 0)):
