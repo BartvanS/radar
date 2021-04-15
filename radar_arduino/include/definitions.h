@@ -10,7 +10,9 @@
 #define TrigPin 8
 #define EchoPin 9
 #define Piezo 10
+//servo
 #define ServoPin 6
+#define MAX_DEGREES 180
 
 //states
 enum States
