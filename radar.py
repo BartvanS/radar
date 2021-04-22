@@ -19,7 +19,8 @@ class Radar:
         self.lines = []
         self.circle_radius = self.W // 2 - margin
         self.cm_to_px_factor = self.circle_radius // sensor_max_distance_cm
-        self.canvas = Canvas(radar_window, self.image, margin, self.W, circle_radius=self.circle_radius)
+        self.canvas = Canvas(radar_window, self.image, margin, self.W, circle_radius=self.circle_radius,
+                             sensor_max_distance_cm=sensor_max_distance_cm)
         self.canvas.update_canvas()
 
     def clean_up_lines(self):
@@ -28,7 +29,6 @@ class Radar:
             return
         for i in range(line_count):
             coordinate = self.lines.pop(0)
-            # coordinate_processed = (coordinate[0] - self.dot_radius, coordinate[1] - self.dot_radius)
             self.canvas.del_line((self.center, self.center), coordinate)
 
     def clean_up_dots(self):

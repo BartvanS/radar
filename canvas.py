@@ -8,7 +8,7 @@ grid_step = 20
 # 0: degree
 # 1: coordinates
 class Canvas:
-    def __init__(self, window, img, margin, w, circle_radius):
+    def __init__(self, window, img, margin, w, circle_radius, sensor_max_distance_cm):
         self.window = window
         self.img = img
         self.half = w // 2
@@ -17,6 +17,7 @@ class Canvas:
         self.W = w
         self.dots = []
         self.radius = circle_radius
+        self.sensor_max_distance_cm = sensor_max_distance_cm
         self.setup_canvas()
 
     def setup_canvas(self):
@@ -29,11 +30,22 @@ class Canvas:
         for coord in range(0, self.W, grid_step):
             self.gen_line((0, coord), (self.W, coord), gray)
             self.gen_line((coord, 0), (coord, self.W), gray)
-        # Center dot
-        self.gen_dots(self.center, (0, 0, 255))
+        # distancing lines
+        step = 10  # 10cm
+        stepcount = self.sensor_max_distance_cm // step
+        i = 0
+        for distance_radius in range(0, self.radius, self.radius // stepcount):
+            i += 10
+            self.gen_text(str(i) + "cm", (distance_radius + self.half + 10, self.half), 0, 0.7)
+            self.gen_circle(self.center, distance_radius)
         # Outer circle
         self.gen_circle(self.center, self.radius)
+        # Center dot
+        self.gen_dots(self.center, (0, 0, 255))
         cv.imshow(self.window, self.img)
+
+    def gen_text(self, text, coordinate, font_face, font_scale, color=(0, 255, 0)):
+        cv.putText(self.img, text, coordinate, font_face, font_scale, color)
 
     def add_dot(self, coordinate, color=(255, 0, 0)):
         self.dots.append(coordinate)

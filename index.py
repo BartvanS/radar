@@ -22,7 +22,7 @@ def parse_msg(msg):
     radar.calc_draw_point(degree, distance)
 
 
-schedule.every(0.1).seconds.do(radar.clean_up_lines)
+schedule.every(0.01).seconds.do(radar.clean_up_lines)
 schedule.every(1).seconds.do(radar.clean_up_dots)
 
 while connected:

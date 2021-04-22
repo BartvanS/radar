@@ -37,7 +37,4 @@ void loop()
 		Serial.print(currentDegree);
 		Serial.print(Delimiter);
 		Serial.println((int)distance); //print the distance that was measured
-
-
-
 }
